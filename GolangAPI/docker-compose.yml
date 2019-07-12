@@ -1,0 +1,31 @@
+version: "3"
+services:
+  app:
+    container_name: sample_app
+    image: golang:1.12.0-alpine
+    volumes:
+      - .:/go/src/github.com/s14228so/GolangAPI
+    command: >
+      sh -c "cd /go/src/github.com/s14228so/GolangAPI &&
+      apk update &&
+      apk add --no-cache git &&
+      go get -u github.com/codegangsta/gin && 
+      go get -u github.com/golang/dep/cmd/dep &&
+      dep init ||
+      dep ensure &&
+      gin -i run"
+    ports:
+      - 8080:8080
+    links:
+      - db
+  db:
+    container_name: sample_db
+    image: mysql:8.0.15
+    volumes:
+      - ./tmp/mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: gin_app
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    command: mysqld
