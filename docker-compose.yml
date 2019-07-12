@@ -1,28 +1,38 @@
 version: "3"
 services:
-  app:
-    container_name: sample_app
+  server:
     image: golang:1.12.0-alpine
     volumes:
-      - .:/go/src/github.com/s14228so/GolangAPI
+      - .:/go/src/github.com/s14228so/WilicoExtra/GolangAPI
     command: >
-      sh -c "cd /go/src/github.com/s14228so/GolangAPI &&
+      sh -c "cd /go/src/github.com/s14228so/WilicoExtra/GolangAPI &&
       apk update &&
       apk add --no-cache git &&
       go get -u github.com/codegangsta/gin && 
       go get -u github.com/golang/dep/cmd/dep &&
       dep init ||
       dep ensure &&
-      gin -i run"
+      gin -i run &&
+      go run main.go"
     ports:
       - 8080:8080
     links:
       - db
+  client:
+    container_name: client
+    build: ./React-Client
+    working_dir: /var/www/html/
+    volumes:
+      - ./React-Client:/var/www/html/
+    command: yarn start
+    ports:
+      - 3000:3000
+
   db:
-    container_name: sample_db
+    container_name: db
     image: mysql:8.0.15
     volumes:
-      - ./tmp/mysql:/var/lib/mysql
+      - ./GolangAPI/tmp/mysql:/var/lib/mysql
     ports:
       - 3306:3306
     environment:
