@@ -19,6 +19,12 @@ func (s Service) GetCoachAll() ([]Coach, error) {
 		return nil, err
 	}
 
+	for i, s := range u {
+		if err := db.Model(&s).Related(&s.Plans).Find(&u[i].Plans).Error; err != nil {
+			log.Fatal(err)
+		}
+	}
+
 	return u, nil
 }
 
