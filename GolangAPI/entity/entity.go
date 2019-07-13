@@ -20,9 +20,10 @@ type User struct {
 }
 
 type Plan struct {
-	ID    uint   `json:"id"`
-	Title string `json:"title"`
-	Price int    `json:"price"`
+	ID      uint   `json:"id"`
+	Title   string `json:"title"`
+	Price   int    `json:"price"`
+	CoachId int    `json:"coachid"`
 }
 
 type Coach struct {
