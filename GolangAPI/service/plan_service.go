@@ -17,8 +17,16 @@ func (s Service) GetPlanAll() ([]Plan, error) {
 	db := db.GetDB()
 	var u []Plan
 
+
+
 	if err := db.Find(&u).Error; err != nil {
 		return nil, err
+	}
+
+
+
+	if err := db.Model(&u).Related(&u.Coach).Error != nil {
+		eturn nil, err
 	}
 
 	return u, nil

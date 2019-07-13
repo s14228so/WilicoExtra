@@ -22,6 +22,19 @@ func (pc CoachController) Index(c *gin.Context) {
 
 }
 
+// func (pc CoachController) Plans(c *gin.Context) {
+// 	var s service.Service
+// 	p, err := s.GetCoachPlans()
+
+// 	if err != nil {
+// 		c.AbortWithStatus(404)
+// 		fmt.Println(err)
+// 	} else {
+// 		c.JSON(200, p)
+// 	}
+
+// }
+
 func (pc CoachController) Create(c *gin.Context) {
 	var s service.Service
 

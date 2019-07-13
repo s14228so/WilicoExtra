@@ -1,12 +1,16 @@
 package service
 
 import (
+	"log"
+
 	"github.com/gin-gonic/gin"
 	"github.com/s14228so/WilicoExtra/GolangAPI/db"
 	"github.com/s14228so/WilicoExtra/GolangAPI/entity"
 )
 
 type Coach entity.Coach
+
+type Plans []entity.Plan
 
 func (s Service) GetCoachAll() ([]Coach, error) {
 	db := db.GetDB()
@@ -36,8 +40,11 @@ func (s Service) GetCoachByID(id string) (Coach, error) {
 	db := db.GetDB()
 	var u Coach
 
-	if err := db.Where("id = ?", id).First(&u).Error; err != nil {
-		return u, err
+	if err := db.First(&u, id).Error; err != nil {
+		log.Fatal(err)
+	}
+	if err := db.Model(&u).Related(&u.Plans).Error; err != nil {
+		log.Fatal(err)
 	}
 
 	return u, nil
