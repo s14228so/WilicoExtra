@@ -1,6 +1,15 @@
 package entity
 
-import "github.com/jinzhu/gorm"
+import (
+	"time"
+)
+
+type MainColumn struct {
+	ID        uint       `gorm:"primary_key" json:"id"`
+	CreatedAt time.Time  `json:"created_at"`
+	UpdatedAt time.Time  `json:"updated_at"`
+	DeletedAt *time.Time `json:"deleted_at"`
+}
 
 type Card struct {
 	Brand string `json:"brand"`
@@ -12,7 +21,7 @@ type Card struct {
 
 // User is user models property
 type User struct {
-	gorm.Model
+	MainColumn
 	Email        string `json:"email"`
 	UserName     string `json:"username"`
 	Introduction string `json:"introduction"`
@@ -22,16 +31,16 @@ type User struct {
 }
 
 type Plan struct {
-	gorm.Model
+	MainColumn
 	Title   string `json:"title"`
 	Price   int    `json:"price"`
 	CoachID uint   `json:"coachid"`
-	Coach   Coach  `gorm:"association_autoupdate:false"`
+	Coach   Coach  `gorm:"association_autoupdate:false" json:"coach"`
 	Users   []User `gorm:"many2many:plan_users"`
 }
 
 type Coach struct {
-	ID       uint
+	MainColumn
 	Email    string `json:"email"`
 	UserName string `json:"username"`
 	Age      string `json:"age"`
