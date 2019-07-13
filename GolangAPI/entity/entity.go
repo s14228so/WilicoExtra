@@ -26,8 +26,8 @@ type Plan struct {
 	Title   string `json:"title"`
 	Price   int    `json:"price"`
 	CoachID uint   `json:"coachid"`
-	// Coach   Coach  `gorm:"association_autoupdate:false"`
-	Users []User `gorm:"many2many:plan_users"`
+	Coach   Coach  `gorm:"association_autoupdate:false"`
+	Users   []User `gorm:"many2many:plan_users"`
 }
 
 type Coach struct {

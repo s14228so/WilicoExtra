@@ -1,6 +1,8 @@
 package service
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 
 	"github.com/s14228so/WilicoExtra/GolangAPI/db"
@@ -17,16 +19,12 @@ func (s Service) GetPlanAll() ([]Plan, error) {
 	db := db.GetDB()
 	var u []Plan
 
-
-
 	if err := db.Find(&u).Error; err != nil {
 		return nil, err
 	}
-
-
-
-	if err := db.Model(&u).Related(&u.Coach).Error != nil {
-		eturn nil, err
+	for i, s := range u {
+		db.Where("id = ?", s.CoachID).Find(&u[i].Coach)
+		fmt.Printf("%#v\n", u[i])
 	}
 
 	return u, nil
