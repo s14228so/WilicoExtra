@@ -19,7 +19,8 @@ type User struct {
 	Introduction string `json:"introduction"`
 	Age          string `json:"age"`
 	Coach        bool   `json:"coach"`
-	Card         *Card  `json:"card"`
+	Card         Card   `json:"card"`
+	Plans        []Plan `gorm:"many2many:subscribes"`
 }
 
 type Card struct {
@@ -30,7 +31,6 @@ type Card struct {
 	Src    string `json:"src"`
 	Year   int    `json:"year"`
 	UserID uint   `json:"userid"`
-	User   User   `json:"user"`
 }
 
 type Plan struct {
@@ -39,7 +39,7 @@ type Plan struct {
 	Price   int    `json:"price"`
 	CoachID uint   `json:"coachid"`
 	Coach   Coach  `gorm:"association_autoupdate:false" json:"coach"`
-	Users   []User `gorm:"many2many:plan_users"`
+	Users   []User `gorm:"many2many:subscribes"`
 }
 
 type Coach struct {

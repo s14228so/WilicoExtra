@@ -44,9 +44,9 @@ func (s Service) GetCardByID(id string) (Card, error) {
 		return u, err
 	}
 
-	if err := db.Model(&u).Related(&u.User).Error; err != nil {
-		return u, err
-	}
+	// if err := db.Model(&u).Related(&u.User).Error; err != nil {
+	// 	return u, err
+	// }
 
 	return u, nil
 }

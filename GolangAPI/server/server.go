@@ -75,6 +75,15 @@ func router() *gin.Engine {
 		p.DELETE("/:id", ctrl.Delete)
 	}
 
+	p := r.Group("/subscribes")
+	{
+		ctrl := controller.PlanController{}
+		p.GET("/:id", ctrl.Show)
+		p.POST("", ctrl.Create)
+		p.PUT("/:id", ctrl.Update)
+		p.DELETE("/:id", ctrl.Delete)
+	}
+
 	c := r.Group("/coaches")
 	{
 		ctrl := controller.CoachController{}

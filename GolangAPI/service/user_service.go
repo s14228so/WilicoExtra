@@ -62,13 +62,13 @@ func (s Service) GetUserByID(id string) (User, error) {
 	db := db.GetDB()
 	var u User
 
-	var card Card
+	// var card Card
 
 	if err := db.Where("id = ?", id).First(&u).Error; err != nil {
 		return u, err
 	}
 
-	if err := db.Model(&u).Related(&card, "Card").Error; err != nil {
+	if err := db.Model(&u).Related(&u.Card).Error; err != nil {
 		log.Fatal(err)
 	}
 
