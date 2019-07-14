@@ -23,10 +23,10 @@ func (pc CardController) GET(c *gin.Context) {
 }
 
 func (pc CardController) Create(c *gin.Context) {
-	id := c.Params.ByName("userID")
+	// id := c.Params.ByName("userID")
 	var s service.Service
 
-	p, err := s.CreateCardModel(id, c)
+	p, err := s.CreateCardModel(c)
 
 	if err != nil {
 		c.AbortWithStatus(400)

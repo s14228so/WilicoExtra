@@ -20,7 +20,7 @@ type User struct {
 	Age          string `json:"age"`
 	Coach        bool   `json:"coach"`
 	Card         Card   `json:"card"`
-	Plans        []Plan `gorm:"many2many:subscribes"`
+	Plans        []Plan `gorm:"many2many:subscriptions" json:"plans"`
 }
 
 type Card struct {
@@ -39,7 +39,7 @@ type Plan struct {
 	Price   int    `json:"price"`
 	CoachID uint   `json:"coachid"`
 	Coach   Coach  `gorm:"association_autoupdate:false" json:"coach"`
-	Users   []User `gorm:"many2many:subscribes"`
+	Users   []User `gorm:"many2many:subscriptions" json:"users"`
 }
 
 //plan.usersを作れば勝手にsubscribes作られる説
@@ -51,7 +51,7 @@ type Coach struct {
 	Age      string `json:"age"`
 	Coach    bool   `json:"coach"`
 	Rating   int    `json:"rating"`
-	Plans    []Plan `json:"plans"`
+	Plans    []Plan `json:"plans"` //DBには入ってないもの
 }
 
 //plan作ってるのにコーチモデルが勝手に入る

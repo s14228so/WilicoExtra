@@ -65,23 +65,22 @@ func router() *gin.Engine {
 
 	}
 
-	p := r.Group("/plans")
+	s := r.Group("/plans")
 	{
 		ctrl := controller.PlanController{}
-		p.GET("", ctrl.Index)
-		p.GET("/:id", ctrl.Show)
-		p.POST("", ctrl.Create)
-		p.PUT("/:id", ctrl.Update)
-		p.DELETE("/:id", ctrl.Delete)
+		s.GET("", ctrl.Index)
+		s.GET("/:id", ctrl.Show)
+		s.POST("", ctrl.Create)
+		s.PUT("/:id", ctrl.Update)
+		s.DELETE("/:id", ctrl.Delete)
 	}
 
 	p := r.Group("/subscribes")
 	{
-		ctrl := controller.PlanController{}
+		ctrl := controller.SubscribeController{}
+		p.POST("/:userid/:planid", ctrl.Create)
 		p.GET("/:id", ctrl.Show)
-		p.POST("", ctrl.Create)
 		p.PUT("/:id", ctrl.Update)
-		p.DELETE("/:id", ctrl.Delete)
 	}
 
 	c := r.Group("/coaches")

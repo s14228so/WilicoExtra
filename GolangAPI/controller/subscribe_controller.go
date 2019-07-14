@@ -14,7 +14,7 @@ import (
 type SubscribeController struct{}
 
 // Index action: GET /users
-func (pc Controller) Index(c *gin.Context) {
+func (pc SubscribeController) Index(c *gin.Context) {
 	var s service.Service
 	p, err := s.GetSubscribeAll()
 
@@ -27,9 +27,12 @@ func (pc Controller) Index(c *gin.Context) {
 }
 
 // Create action: POST /users
-func (pc Controller) Create(c *gin.Context) {
+func (pc SubscribeController) Create(c *gin.Context) {
 	var s service.Service
-	p, err := s.CreateSubscribeModel(id, c)
+	userid := c.Params.ByName("userid")
+	planid := c.Params.ByName("planid")
+
+	p, err := s.CreateSubscribeModel(userid, planid, c)
 
 	if err != nil {
 		c.AbortWithStatus(400)
@@ -40,7 +43,7 @@ func (pc Controller) Create(c *gin.Context) {
 }
 
 // Show action: GET /users/:id
-func (pc Controller) Show(c *gin.Context) {
+func (pc SubscribeController) Show(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var s service.Service
 	p, err := s.GetSubscribeByID(id)
@@ -54,7 +57,7 @@ func (pc Controller) Show(c *gin.Context) {
 }
 
 // Update action: PUT /users/:id
-func (pc Controller) Update(c *gin.Context) {
+func (pc SubscribeController) Update(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var s service.Service
 	p, err := s.UpdateSubscribeByID(id, c)
