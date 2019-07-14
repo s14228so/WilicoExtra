@@ -16,7 +16,7 @@ type Card entity.Card
 
 type User entity.User
 
-func (s Service) CreateCardModel(userID string, c *gin.Context) (Card, error) {
+func (s Service) CreateCardModel(c *gin.Context) (Card, error) {
 
 	db := db.GetDB()
 	var u Card

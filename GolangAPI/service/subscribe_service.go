@@ -11,7 +11,6 @@ import (
 )
 
 // Service procides user's behavior
-type Service struct{}
 
 // User is alias of entity.User struct
 
@@ -41,24 +40,27 @@ func (s Service) GetSubscribeAll() ([]User, error) {
 	return u, nil
 }
 
+type Subscribe struct {
+}
+
 // CreateModel is create User model
-func (s Service) CreateSubscribeModel(c *gin.Context) (User, error) {
+func (s Service) CreateSubscribeModel(planID string, c *gin.Context) (Subscribe, error) {
 	db := db.GetDB()
-	var u User
+
+	var u Subscribe
+	var user User
 
 	if err := c.BindJSON(&u); err != nil {
 		return u, err
 	}
 
-	if err := db.Create(&u).Error; err != nil {
-		return u, err
-	}
+	db.Model(&user).Association("Plans").Append(&u)
 
 	return u, nil
 }
 
 // GetByID is get a User
-func (s Service) GetUserByID(id string) (User, error) {
+func (s Service) GetSubscribeByID(id string) (User, error) {
 	db := db.GetDB()
 	var u User
 
@@ -76,7 +78,7 @@ func (s Service) GetUserByID(id string) (User, error) {
 }
 
 // UpdateByID is update a User
-func (s Service) UpdateUserByID(id string, c *gin.Context) (User, error) {
+func (s Service) UpdateSubscribeByID(id string, c *gin.Context) (User, error) {
 	db := db.GetDB()
 	var u User
 
@@ -94,7 +96,7 @@ func (s Service) UpdateUserByID(id string, c *gin.Context) (User, error) {
 }
 
 // DeleteByID is delete a User
-func (s Service) DeleteUserByID(id string) error {
+func (s Service) DeleteSubscribeByID(id string) error {
 	db := db.GetDB()
 	var u User
 

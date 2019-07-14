@@ -42,6 +42,8 @@ type Plan struct {
 	Users   []User `gorm:"many2many:subscribes"`
 }
 
+//plan.usersを作れば勝手にsubscribes作られる説
+//でもuserを作らないといけないから違うか
 type Coach struct {
 	MainColumn
 	Email    string `json:"email"`

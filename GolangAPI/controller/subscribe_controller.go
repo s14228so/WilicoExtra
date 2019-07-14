@@ -16,7 +16,7 @@ type SubscribeController struct{}
 // Index action: GET /users
 func (pc Controller) Index(c *gin.Context) {
 	var s service.Service
-	p, err := s.GetUserAll()
+	p, err := s.GetSubscribeAll()
 
 	if err != nil {
 		c.AbortWithStatus(404)
@@ -29,7 +29,7 @@ func (pc Controller) Index(c *gin.Context) {
 // Create action: POST /users
 func (pc Controller) Create(c *gin.Context) {
 	var s service.Service
-	p, err := s.CreateSubscribeModel(c)
+	p, err := s.CreateSubscribeModel(id, c)
 
 	if err != nil {
 		c.AbortWithStatus(400)
@@ -43,7 +43,7 @@ func (pc Controller) Create(c *gin.Context) {
 func (pc Controller) Show(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var s service.Service
-	p, err := s.GetUserByID(id)
+	p, err := s.GetSubscribeByID(id)
 
 	if err != nil {
 		c.AbortWithStatus(404)
@@ -57,7 +57,7 @@ func (pc Controller) Show(c *gin.Context) {
 func (pc Controller) Update(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var s service.Service
-	p, err := s.UpdateUserByID(id, c)
+	p, err := s.UpdateSubscribeByID(id, c)
 
 	if err != nil {
 		c.AbortWithStatus(400)
