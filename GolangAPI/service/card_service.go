@@ -1,6 +1,8 @@
 package service
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 
 	"github.com/s14228so/WilicoExtra/GolangAPI/db"
@@ -12,14 +14,12 @@ import (
 // User is alias of entity.User struct
 type Card entity.Card
 
+type User entity.User
+
 func (s Service) CreateCardModel(userID string, c *gin.Context) (Card, error) {
 
 	db := db.GetDB()
 	var u Card
-
-	if err := db.Where("userID = ?", userID).First(&u).Error; err != nil {
-		return u, err
-	}
 
 	if err := c.BindJSON(&u); err != nil {
 		return u, err
@@ -32,11 +32,30 @@ func (s Service) CreateCardModel(userID string, c *gin.Context) (Card, error) {
 	return u, nil
 }
 
+func (s Service) GetCardByID(id string) (Card, error) {
+	db := db.GetDB()
+	var u Card
+
+	// var user User
+
+	fmt.Println(id)
+
+	if err := db.Where("user_id = ?", id).Find(&u).First(&u).Error; err != nil {
+		return u, err
+	}
+
+	if err := db.Model(&u).Related(&u.User).Error; err != nil {
+		return u, err
+	}
+
+	return u, nil
+}
+
 func (s Service) UpdateCardByID(userID string, c *gin.Context) (Card, error) {
 	db := db.GetDB()
 	var u Card
 
-	if err := db.Where("userID = ?", userID).First(&u).Error; err != nil {
+	if err := db.Where("user_id = ?", userID).First(&u).Error; err != nil {
 		return u, err
 	}
 
@@ -54,7 +73,7 @@ func (s Service) DeleteCardByID(userID string) error {
 	db := db.GetDB()
 	var u Card
 
-	if err := db.Where("userID = ?", userID).Delete(&u).Error; err != nil {
+	if err := db.Where("user_id = ?", userID).Delete(&u).Error; err != nil {
 		return err
 	}
 

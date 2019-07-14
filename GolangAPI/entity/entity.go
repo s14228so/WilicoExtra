@@ -11,16 +11,6 @@ type MainColumn struct {
 	DeletedAt *time.Time `json:"deleted_at"`
 }
 
-type Card struct {
-	Brand  string `json:"brand"`
-	Last4  int    `json:"last4"`
-	Month  int    `json:"month"`
-	Src    string `json:"src"`
-	Year   int    `json:"year"`
-	UserID uint   `json:"userid"`
-	User   User   `json:"user"`
-}
-
 // User is user models property
 type User struct {
 	MainColumn
@@ -30,6 +20,17 @@ type User struct {
 	Age          string `json:"age"`
 	Coach        bool   `json:"coach"`
 	Card         *Card  `json:"card"`
+}
+
+type Card struct {
+	MainColumn
+	Brand  string `json:"brand"`
+	Last4  int    `json:"last4"`
+	Month  int    `json:"month"`
+	Src    string `json:"src"`
+	Year   int    `json:"year"`
+	UserID uint   `json:"userid"`
+	User   User   `json:"user"`
 }
 
 type Plan struct {

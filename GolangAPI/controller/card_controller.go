@@ -9,6 +9,19 @@ import (
 
 type CardController struct{}
 
+func (pc CardController) GET(c *gin.Context) {
+	id := c.Params.ByName("id")
+	var s service.Service
+
+	p, err := s.GetCardByID(id)
+
+	if err != nil {
+		c.AbortWithStatus(400)
+	} else {
+		c.JSON(200, p)
+	}
+}
+
 func (pc CardController) Create(c *gin.Context) {
 	id := c.Params.ByName("userID")
 	var s service.Service

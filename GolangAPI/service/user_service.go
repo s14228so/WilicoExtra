@@ -8,14 +8,12 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/s14228so/WilicoExtra/GolangAPI/db"
-	"github.com/s14228so/WilicoExtra/GolangAPI/entity"
 )
 
 // Service procides user's behavior
 type Service struct{}
 
 // User is alias of entity.User struct
-type User entity.User
 
 // GetAll is get all User
 func (s Service) GetUserAll() ([]User, error) {
@@ -26,13 +24,13 @@ func (s Service) GetUserAll() ([]User, error) {
 		return nil, err
 	}
 
-	for i, s := range u {
-		//前半だけなら一つのコーチに所属するプラン一覧を取得できる
-		//後半でcoachとplansをくっつけてる
-		if err := db.Model(&s).Related(&s.Card).Find(&u[i].Card).Error; err != nil {
-			log.Fatal(err)
-		}
-	}
+	// for i, s := range u {
+	// 	//前半だけなら一つのコーチに所属するプラン一覧を取得できる
+	// 	//後半でcoachとplansをくっつけてる
+	// 	if err := db.Model(&s).Related(&s.Card).Find(&u[i].Card).Error; err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// }
 
 	// for _, v := range u {
 	// 	if err := db.Model(&v).Related(&card).Error; err != nil {
@@ -70,7 +68,7 @@ func (s Service) GetUserByID(id string) (User, error) {
 		return u, err
 	}
 
-	if err := db.Model(&u).Related(&card).Error; err != nil {
+	if err := db.Model(&u).Related(&card, "Card").Error; err != nil {
 		log.Fatal(err)
 	}
 
