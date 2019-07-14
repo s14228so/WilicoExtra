@@ -56,6 +56,11 @@ func router() *gin.Engine {
 		u.DELETE("/:id", ctrl.Delete)
 	}
 
+	cardctrl := controller.CardController{}
+	r.POST("/users/:userID/cards", cardctrl.Create)
+	r.PUT("/users/:userID/cards", cardctrl.Update)
+	r.DELETE("/users/:userID/cards", cardctrl.Delete)
+
 	p := r.Group("/plans")
 	{
 		ctrl := controller.PlanController{}

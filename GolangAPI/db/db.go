@@ -32,4 +32,5 @@ func autoMigration() {
 	db.AutoMigrate(&entity.User{})
 	db.AutoMigrate(&entity.Plan{})
 	db.AutoMigrate(&entity.Coach{})
+	db.AutoMigrate(&entity.Card{})
 }

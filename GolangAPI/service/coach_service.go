@@ -15,11 +15,15 @@ type Plans []entity.Plan
 func (s Service) GetCoachAll() ([]Coach, error) {
 	db := db.GetDB()
 	var u []Coach
+
+	//Coach型のレコードを全取得
 	if err := db.Find(&u).Error; err != nil {
 		return nil, err
 	}
 
 	for i, s := range u {
+		//前半だけなら一つのコーチに所属するプラン一覧を取得できる
+		//後半でcoachとplansをくっつけてる
 		if err := db.Model(&s).Related(&s.Plans).Find(&u[i].Plans).Error; err != nil {
 			log.Fatal(err)
 		}

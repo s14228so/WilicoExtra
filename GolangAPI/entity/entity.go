@@ -12,11 +12,13 @@ type MainColumn struct {
 }
 
 type Card struct {
-	Brand string `json:"brand"`
-	Last4 int    `json:"last4"`
-	Month int    `json:"month"`
-	Src   string `json:"src"`
-	Year  int    `json:"year"`
+	Brand  string `json:"brand"`
+	Last4  int    `json:"last4"`
+	Month  int    `json:"month"`
+	Src    string `json:"src"`
+	Year   int    `json:"year"`
+	UserID uint   `json:"userid"`
+	User   User   `json:"user"`
 }
 
 // User is user models property
@@ -27,7 +29,7 @@ type User struct {
 	Introduction string `json:"introduction"`
 	Age          string `json:"age"`
 	Coach        bool   `json:"coach"`
-	Card         Card   `json:"card"`
+	Card         *Card  `json:"card"`
 }
 
 type Plan struct {
