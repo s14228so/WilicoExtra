@@ -14,13 +14,14 @@ type MainColumn struct {
 // User is user models property
 type User struct {
 	MainColumn
-	Email        string  `json:"email"`
-	UserName     string  `json:"username"`
-	Introduction string  `json:"introduction"`
-	Age          string  `json:"age"`
-	Coach        bool    `json:"coach"`
-	Card         Card    `json:"card"`
-	Plans        []*Plan `gorm:"many2many:subscriptions" json:"plans"`
+	Email        string     `json:"email"`
+	UserName     string     `json:"username"`
+	Introduction string     `json:"introduction"`
+	Age          string     `json:"age"`
+	Coach        bool       `json:"coach"`
+	Card         Card       `json:"card"`
+	Plans        []*Plan    `gorm:"many2many:subscriptions" json:"plans"`
+	Favorites    []Favorite `json:"favorites"`
 }
 
 type Card struct {
@@ -52,6 +53,32 @@ type Coach struct {
 	Coach    bool   `json:"coach"`
 	Rating   int    `json:"rating"`
 	Plans    []Plan `json:"plans"` //DBには入ってないもの
+}
+
+type Album struct {
+	MainColumn
+	Image     string     `json:"image"`
+	UserID    uint       `json:"userid"`
+	User      User       `json:"user"`
+	Body      string     `json:"body"`
+	Favorites []Favorite `json:"favorites"`
+	Comments  []Comment  `json:"comments"`
+}
+
+type Comment struct {
+	MainColumn
+	AlbumID uint   `json:"albumid"`
+	Album   Album  `json:"album"`
+	Body    string `json:"body"`
+	UserID  uint   `json:"userid"`
+	User    User   `json:"user"`
+}
+
+type Favorite struct {
+	MainColumn
+	AlbumID uint `json:"albumid"`
+	UserID  uint `json:"userid"`
+	User    User `json:"user"`
 }
 
 //plan作ってるのにコーチモデルが勝手に入る
