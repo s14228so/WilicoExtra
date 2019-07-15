@@ -14,13 +14,13 @@ type MainColumn struct {
 // User is user models property
 type User struct {
 	MainColumn
-	Email        string `json:"email"`
-	UserName     string `json:"username"`
-	Introduction string `json:"introduction"`
-	Age          string `json:"age"`
-	Coach        bool   `json:"coach"`
-	Card         Card   `json:"card"`
-	Plans        []Plan `gorm:"many2many:subscriptions" json:"plans"`
+	Email        string  `json:"email"`
+	UserName     string  `json:"username"`
+	Introduction string  `json:"introduction"`
+	Age          string  `json:"age"`
+	Coach        bool    `json:"coach"`
+	Card         Card    `json:"card"`
+	Plans        []*Plan `gorm:"many2many:subscriptions" json:"plans"`
 }
 
 type Card struct {
@@ -35,11 +35,11 @@ type Card struct {
 
 type Plan struct {
 	MainColumn
-	Title   string `json:"title"`
-	Price   int    `json:"price"`
-	CoachID uint   `json:"coachid"`
-	Coach   Coach  `gorm:"association_autoupdate:false" json:"coach"`
-	Users   []User `gorm:"many2many:subscriptions" json:"users"`
+	Title   string  `json:"title"`
+	Price   int     `json:"price"`
+	CoachID uint    `json:"coachid"`
+	Coach   Coach   `gorm:"association_autoupdate:false" json:"coach"`
+	Users   []*User `gorm:"many2many:subscriptions" json:"users"`
 }
 
 //plan.usersを作れば勝手にsubscribes作られる説

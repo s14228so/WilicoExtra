@@ -53,41 +53,37 @@ func (s Service) CreateSubscribeModel(userid string, planid string, c *gin.Conte
 	// var user User
 	var plan Plan
 
-	// if err := db.Where("id = ?", userid).First(&user).Error; err != nil {
-	// 	panic("Could not find the user!")
-	// }
-
-	// if err := db.Where("id = ?", planid).First(&plan).Error; err != nil {
-	// 	return plan, err
-	// }
-
 	type Subscription struct {
 		UserID uint
 		PlanID uint
 	}
 	var subscription Subscription
-
+	var user User
 	log.Printf("planid: %v", planid)
 	log.Printf("userid: %v", userid)
 	u, _ := strconv.Atoi(userid)
 	p, _ := strconv.Atoi(planid)
+
+	user.ID = uint(u)
+	plan.ID = uint(p)
 	subscription.UserID = uint(u)
 	subscription.PlanID = uint(p)
 	log.Printf("plan: %v", plan)
 
-	//多分plan_idがnullになってる
 	if err := db.Create(&subscription).Error; err != nil {
 		return "error", err
 	}
-	var user User
-	relations := db.First(&user, userid).Related(&user.Plans)
 
-	log.Printf("%v", relations)
+	if err := db.Where("id = ?", userid).First(&user).Error; err != nil {
+		panic("Could not find the user!")
+	}
 
-	// return u, nil
+	if err := db.Where("id = ?", planid).First(&plan).Error; err != nil {
+		return "error", err
+	}
 
-	// db.Model(&user).Association("Plans").Append(&plan)
-	// Error 1364 Field 'plan_id' doesn't have a default value
+	db.Model(&user).Association("Plans").Append(&plan)
+
 	return "OK!", nil
 }
 
