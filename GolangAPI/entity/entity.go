@@ -52,7 +52,9 @@ type Coach struct {
 	Age      string `json:"age"`
 	Coach    bool   `json:"coach"`
 	Rating   int    `json:"rating"`
+	Apply    Apply  `json:"apply"`
 	Plans    []Plan `json:"plans"` //DBには入ってないもの
+	Status   bool   `json:"status"`
 }
 
 type Album struct {
@@ -80,6 +82,12 @@ type Favorite struct {
 	UserID  uint `json:"userid"`
 	User    User `json:"user"`
 }
+
+type Apply struct {
+	MainColumn
+	CoachID uint `json:"coachid"`
+}
+
 
 //plan作ってるのにコーチモデルが勝手に入る
 //Coachオブゼクトを抜いたら勝手にはくなった
