@@ -11,18 +11,14 @@ export class Uploader extends React.Component {
       plans: []
     };
   }
-  upload(file) {
-    const url = "http://localhost:8080/upload";
-    // リクエスト直前に実行
-    axios.post(url, {
-      params: { file: file }
-    });
-  }
+  upload = e => {
+    e.preventDefault();
+  };
 
   render() {
     return (
       <div>
-        <Upload getPlans={this.upload()} />
+        <Upload upload={this.upload} />
       </div>
     );
   }

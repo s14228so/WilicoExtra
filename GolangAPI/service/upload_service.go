@@ -2,10 +2,11 @@ package service
 
 import (
 	"fmt"
+	"net/http"
+	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/olahol/go-imageupload"
 	"github.com/s14228so/WilicoExtra/GolangAPI/db"
 	"github.com/s14228so/WilicoExtra/GolangAPI/entity"
 )
@@ -19,20 +20,23 @@ type Image entity.Image
 func (s Service) CreateImageModel(c *gin.Context) (Image, error) {
 	db := db.GetDB()
 	var u Image
-	img, err := imageupload.Process(c.Request, "file")
 
+	form, err := c.MultipartForm()
 	if err != nil {
-		panic(err)
+		c.String(http.StatusBadRequest, fmt.Sprintf("get form err: %s", err.Error()))
+		return u, err
+	}
+	files := form.File["files"]
+
+	for _, file := range files {
+		filename := filepath.Base(file.Filename)
+		if err := c.SaveUploadedFile(file, filename); err != nil {
+			c.String(http.StatusBadRequest, fmt.Sprintf("upload file err: %s", err.Error()))
+			return u, err
+		}
 	}
 
-	thumb, err := imageupload.ThumbnailPNG(img, 300, 300)
-
-	if err != nil {
-		panic(err)
-	}
-
-	thumb.Write(c.Writer)
-	fmt.Printf("%T %v", thumb, thumb)
+	c.String(http.StatusOK, fmt.Sprintf("Uploaded successfully %d files.", len(files)))
 
 	if err := c.BindJSON(&u); err != nil {
 		return u, err
