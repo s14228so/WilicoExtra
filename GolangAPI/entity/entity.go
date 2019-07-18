@@ -22,6 +22,7 @@ type User struct {
 	Card         Card       `json:"card"`
 	Plans        []*Plan    `gorm:"many2many:subscriptions" json:"plans"`
 	Favorites    []Favorite `json:"favorites"`
+	Images       []Image    `json:"images"`
 }
 
 type Card struct {
@@ -76,6 +77,11 @@ type Comment struct {
 	User    User   `json:"user"`
 }
 
+type Image struct {
+	Src    string `json:"src"`
+	User   User   `json:"user"`
+	UserID uint   `json:"userid"`
+}
 type Favorite struct {
 	MainColumn
 	AlbumID uint `json:"albumid"`
@@ -87,7 +93,6 @@ type Apply struct {
 	MainColumn
 	CoachID uint `json:"coachid"`
 }
-
 
 //plan作ってるのにコーチモデルが勝手に入る
 //Coachオブゼクトを抜いたら勝手にはくなった

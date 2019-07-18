@@ -34,6 +34,7 @@ func routeGet(c *gin.Context) {
 
 func router() *gin.Engine {
 	r := gin.Default()
+
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000"},
 		AllowMethods:     []string{"GET", "DELETE", "PUT", "PATCH"},
@@ -46,6 +47,11 @@ func router() *gin.Engine {
 		MaxAge: 12 * time.Hour,
 	}))
 
+	i := r.Group("/upload")
+	{
+		ctrl := controller.UploaderController{}
+		i.POST("", ctrl.Create)
+	}
 	u := r.Group("/users")
 	{
 		ctrl := controller.Controller{}
