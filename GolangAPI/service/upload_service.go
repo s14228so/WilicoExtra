@@ -35,7 +35,7 @@ func (s Service) CreateImageModel(c *gin.Context) (Image, error) {
 			return u, err
 		}
 	}
-
+	//https://github.com/gin-gonic/examples/blob/master/upload-file/multiple/main.go
 	c.String(http.StatusOK, fmt.Sprintf("Uploaded successfully %d files.", len(files)))
 
 	if err := c.BindJSON(&u); err != nil {
