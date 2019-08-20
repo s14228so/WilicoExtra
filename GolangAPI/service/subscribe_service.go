@@ -4,7 +4,6 @@ package service
 
 import (
 	"log"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 
@@ -16,41 +15,51 @@ import (
 // User is alias of entity.User struct
 
 // GetAll is get all User
-func (s Service) GetSubscribeAll() ([]User, error) {
+
+type Subscription struct {
+	UserID uint `json:"userid"`
+	PlanID uint `json:"planid"`
+}
+
+func (s Service) GetSubscribeAll() ([]Subscription, error) {
 	db := db.GetDB()
-	var u []User
+	var u []Subscription
 
 	if err := db.Find(&u).Error; err != nil {
 		return nil, err
 	}
 
-	// for i, s := range u {
-	// 	//前半だけなら一つのコーチに所属するプラン一覧を取得できる
-	// 	//後半でcoachとplansをくっつけてる
-	// 	if err := db.Model(&s).Related(&s.Card).Find(&u[i].Card).Error; err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// }
-
-	// for _, v := range u {
-	// 	if err := db.Model(&v).Related(&card).Error; err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// }
-
 	return u, nil
-}
 
-type Subscribe struct {
-	UserID uint `json:"userid"`
-	PlanID uint `json:"planid"`
+	// db := db.GetDB()
+	// var u []User
+
+	// // if err := db.Find(&u).Error; err != nil {
+	// // 	return nil, err
+	// // }
+
+	// // for i, s := range u {
+	// // 	//前半だけなら一つのコーチに所属するプラン一覧を取得できる
+	// // 	//後半でcoachとplansをくっつけてる
+	// // 	if err := db.Model(&s).Related(&s.Card).Find(&u[i].Card).Error; err != nil {
+	// // 		log.Fatal(err)
+	// // 	}
+	// // }
+
+	// // for _, v := range u {
+	// // 	if err := db.Model(&v).Related(&card).Error; err != nil {
+	// // 		log.Fatal(err)
+	// // 	}
+	// // }
+
+	// return u, nil
 }
 
 // CreateModel is create User model
-func (s Service) CreateSubscribeModel(userid string, planid string, c *gin.Context) (string, error) {
+func (s Service) CreateSubscribeModel(c *gin.Context) (string, error) {
 	db := db.GetDB()
 
-	// var user User
+	var user User
 	var plan Plan
 
 	type Subscription struct {
@@ -58,31 +67,36 @@ func (s Service) CreateSubscribeModel(userid string, planid string, c *gin.Conte
 		PlanID uint
 	}
 	var subscription Subscription
-	var user User
-	log.Printf("planid: %v", planid)
-	log.Printf("userid: %v", userid)
-	u, _ := strconv.Atoi(userid)
-	p, _ := strconv.Atoi(planid)
+	// var user User
 
-	user.ID = uint(u)
-	plan.ID = uint(p)
-	subscription.UserID = uint(u)
-	subscription.PlanID = uint(p)
-	log.Printf("plan: %v", plan)
+	// 	func (s Service) CreatePlanModel(c *gin.Context) (Plan, error) {
+	// 	db := db.GetDB()
+	// 	var u Plan
+
+	if err := c.BindJSON(&subscription); err != nil {
+		return "ok", err
+	}
 
 	if err := db.Create(&subscription).Error; err != nil {
-		return "error", err
+		return "ok", err
 	}
 
-	if err := db.Where("id = ?", userid).First(&user).Error; err != nil {
+	if err := db.Where("id = ?", subscription.UserID).First(&user).Error; err != nil {
 		panic("Could not find the user!")
 	}
+	log.Printf("user: %v", user)
 
-	if err := db.Where("id = ?", planid).First(&plan).Error; err != nil {
+	log.Printf("subscription: %v", subscription.UserID)
+	if err := db.Where("id = ?", subscription.PlanID).First(&plan).Error; err != nil {
 		return "error", err
 	}
+	log.Printf("plan: %v", plan)
 
 	db.Model(&user).Association("Plans").Append(&plan)
+	db.Model(&plan).Association("Users").Append(&user)
+	var plans []Plan
+	db.First(&user, "id = ?", 1)
+	db.Model(&user).Related(&plans, "Plans")
 
 	return "OK!", nil
 }

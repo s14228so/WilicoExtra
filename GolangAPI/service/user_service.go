@@ -61,16 +61,14 @@ func (s Service) CreateUserModel(c *gin.Context) (User, error) {
 func (s Service) GetUserByID(id string) (User, error) {
 	db := db.GetDB()
 	var u User
-
-	// var card Card
-
-	if err := db.Where("id = ?", id).First(&u).Error; err != nil {
-		return u, err
-	}
-
-	if err := db.Model(&u).Related(&u.Card).Error; err != nil {
+	if err := db.First(&u, id).Related(&u.Plans, "Plans").Error; err != nil {
 		log.Fatal(err)
 	}
+	// for _, plan := range u.Plans {
+	// 	fmt.Printf("タイトル: %s\n", plan.Title)
+	// }
+
+	log.Printf("user: %v", u)
 
 	return u, nil
 }

@@ -3,7 +3,6 @@ package service
 import (
 	"fmt"
 	"net/http"
-	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 
@@ -29,13 +28,12 @@ func (s Service) CreateImageModel(c *gin.Context) (Image, error) {
 	files := form.File["files"]
 
 	for _, file := range files {
-		filename := filepath.Base(file.Filename)
-		if err := c.SaveUploadedFile(file, filename); err != nil {
+		dstDir := "./public/uploads"
+		if err := c.SaveUploadedFile(file, dstDir); err != nil {
 			c.String(http.StatusBadRequest, fmt.Sprintf("upload file err: %s", err.Error()))
 			return u, err
 		}
 	}
-	//https://github.com/gin-gonic/examples/blob/master/upload-file/multiple/main.go
 	c.String(http.StatusOK, fmt.Sprintf("Uploaded successfully %d files.", len(files)))
 
 	if err := c.BindJSON(&u); err != nil {

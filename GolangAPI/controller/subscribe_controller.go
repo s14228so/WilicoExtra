@@ -26,13 +26,25 @@ func (pc SubscribeController) Index(c *gin.Context) {
 	}
 }
 
-// Create action: POST /users
+// // Create action: POST /users
+// func (pc SubscribeController) Create(c *gin.Context) {
+// 	var s service.Service
+// 	userid := c.Params.ByName("userid")
+// 	planid := c.Params.ByName("planid")
+
+// 	p, err := s.CreateSubscribeModel(userid, planid, c)
+
+// 	if err != nil {
+// 		c.AbortWithStatus(400)
+// 		fmt.Println(err)
+// 	} else {
+// 		c.JSON(201, p)
+// 	}
+// }
+
 func (pc SubscribeController) Create(c *gin.Context) {
 	var s service.Service
-	userid := c.Params.ByName("userid")
-	planid := c.Params.ByName("planid")
-
-	p, err := s.CreateSubscribeModel(userid, planid, c)
+	p, err := s.CreateSubscribeModel(c)
 
 	if err != nil {
 		c.AbortWithStatus(400)

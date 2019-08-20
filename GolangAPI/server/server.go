@@ -34,6 +34,7 @@ func routeGet(c *gin.Context) {
 
 func router() *gin.Engine {
 	r := gin.Default()
+	r.MaxMultipartMemory = 8 << 20 // 8 MiB
 
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000"},
@@ -46,8 +47,10 @@ func router() *gin.Engine {
 		},
 		MaxAge: 12 * time.Hour,
 	}))
+	r.Static("/images", "../public")
 
 	i := r.Group("/upload")
+
 	{
 		ctrl := controller.UploaderController{}
 		i.POST("", ctrl.Create)
@@ -81,10 +84,11 @@ func router() *gin.Engine {
 		s.DELETE("/:id", ctrl.Delete)
 	}
 
-	p := r.Group("/subscribes")
+	p := r.Group("/subscriptions")
 	{
 		ctrl := controller.SubscribeController{}
-		p.POST("/:userid/:planid", ctrl.Create)
+		p.GET("", ctrl.Index)
+		p.POST("", ctrl.Create)
 		p.GET("/:id", ctrl.Show)
 		p.PUT("/:id", ctrl.Update)
 	}

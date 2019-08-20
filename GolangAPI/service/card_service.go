@@ -1,8 +1,6 @@
 package service
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 
 	"github.com/s14228so/WilicoExtra/GolangAPI/db"
@@ -37,8 +35,6 @@ func (s Service) GetCardByID(id string) (Card, error) {
 	var u Card
 
 	// var user User
-
-	fmt.Println(id)
 
 	if err := db.Where("user_id = ?", id).Find(&u).First(&u).Error; err != nil {
 		return u, err

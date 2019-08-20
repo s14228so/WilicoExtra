@@ -11,7 +11,6 @@ type MainColumn struct {
 	DeletedAt *time.Time `json:"deleted_at"`
 }
 
-// User is user models property
 type User struct {
 	MainColumn
 	Email        string     `json:"email"`
@@ -20,10 +19,13 @@ type User struct {
 	Age          string     `json:"age"`
 	Coach        bool       `json:"coach"`
 	Card         Card       `json:"card"`
-	Plans        []*Plan    `gorm:"many2many:subscriptions" json:"plans"`
+	Plans        []*Plan    `gorm:"many2many:subscriptions;" json:"plans"`
 	Favorites    []Favorite `json:"favorites"`
 	Images       []Image    `json:"images"`
 }
+
+//coachは複数のプランを持っているし、ユーザーは複数のプランを持っている
+//planとuserはmanytomany
 
 type Card struct {
 	MainColumn
@@ -41,7 +43,7 @@ type Plan struct {
 	Price   int     `json:"price"`
 	CoachID uint    `json:"coachid"`
 	Coach   Coach   `gorm:"association_autoupdate:false" json:"coach"`
-	Users   []*User `gorm:"many2many:subscriptions" json:"users"`
+	Users   []*User `gorm:"many2many:subscriptions;" json:"users"`
 }
 
 //plan.usersを作れば勝手にsubscribes作られる説
