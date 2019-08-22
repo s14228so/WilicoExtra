@@ -2,7 +2,6 @@ package server
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -36,17 +35,23 @@ func router() *gin.Engine {
 	r := gin.Default()
 	r.MaxMultipartMemory = 8 << 20 // 8 MiB
 
-	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"},
-		AllowMethods:     []string{"GET", "DELETE", "PUT", "PATCH", "POST"},
-		AllowHeaders:     []string{"Origin"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		AllowOriginFunc: func(origin string) bool {
-			return origin == "https://github.com"
-		},
-		MaxAge: 12 * time.Hour,
-	}))
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:3000"}
+	// config.AllowOrigins == []string{"http://google.com", "http://facebook.com"}
+
+	r.Use(cors.New(config))
+
+	// r.Use(cors.New(cors.Config{
+	// 	AllowOrigins:     []string{"http://localhost:3000"},
+	// 	AllowMethods:     []string{"GET", "DELETE", "PUT", "PATCH", "POST"},
+	// 	AllowHeaders:     []string{"Origin"},
+	// 	ExposeHeaders:    []string{"Content-Length", "Content-Type"},
+	// 	AllowCredentials: true,
+	// 	AllowOriginFunc: func(origin string) bool {
+	// 		return origin == "https://github.com"
+	// 	},
+	// 	MaxAge: 12 * time.Hour,
+	// }))
 	r.Static("/images", "../public")
 
 	i := r.Group("/upload")
