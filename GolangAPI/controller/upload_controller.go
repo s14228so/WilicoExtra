@@ -11,10 +11,9 @@ import (
 	//planとしてserviceパッケージを読み込む
 )
 
-// Controller is user controlller
+// UploaderController is user controlller
 type UploaderController struct{}
 
-// Index action: GET /users
 // Create action: POST /users
 func (pc UploaderController) Create(c *gin.Context) {
 	var s service.Service

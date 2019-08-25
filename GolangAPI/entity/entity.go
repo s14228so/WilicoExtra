@@ -80,9 +80,9 @@ type Comment struct {
 }
 
 type Image struct {
-	Src    string `json:"src"`
-	User   User   `json:"user"`
-	UserID uint   `json:"userid"`
+	Src string `json:"src"`
+	// User   User   `json:"user"`
+	// UserID uint   `json:"userid"`
 }
 type Favorite struct {
 	MainColumn
